@@ -4,10 +4,10 @@
     text-align: center;
 }
 
-.box:nth-child(2n +1) {
+.box:nth-child(odd) {
     background-color: #aaa;
 }
 
-.box:nth-child(2n +2) {
+.box:nth-child(even) {
     background-color: #ccc;
 }
