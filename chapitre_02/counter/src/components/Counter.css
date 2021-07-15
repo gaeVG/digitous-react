@@ -1,0 +1,22 @@
+.counter {
+    display: flex;
+    margin: 1em auto;
+    justify-content: space-evenly;
+}
+
+.counter button {
+    width: 4em;
+    height: 4em;
+    border: none;
+    color: white;
+    border-radius: 10em;
+    font-size: 16px;
+}
+
+.counter button:first-child {
+    background-color: #f44336;
+}
+
+.counter button:last-child {
+    background-color: #4CAF50;
+}
