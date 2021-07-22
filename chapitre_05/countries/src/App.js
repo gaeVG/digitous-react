@@ -1,6 +1,6 @@
 import React from "react"
 import './App.css';
-import Button from "./components/Button";
+import Search from "./components/Search";
 import Card from "./components/Card";
 
 class App extends React.Component {
@@ -8,37 +8,36 @@ class App extends React.Component {
 		super()
 
 		this.state ={
-			name : "",
-			capital: "",
-			flag: "",
-			population: "",
-			region: ""
+			countries : undefined,
+			search : undefined
+			
 		}
 	}
 
-	componentDidMount() {
-		fetch("https://restcountries.eu/rest/v2/name/france")
-			.then(res => res.json())
-			.then(data => {
-				let country =data[0]
+	componentDidMount = () => {
 
-				this.setState({
-					name : country.name,
-					capital : country.capital,
-					flag : country.flag,
-					population : country.population,
-					region : country.region
+		if (this.state.countries === undefined && this.state.countries === undefined) {
+
+			fetch("http://82.64.247.20:3636/all")
+				.then(res => res.json())
+				.then(countries => {
+
+					this.setState({
+						countries : countries
+					})
 				})
-			})
+				.catch(e => {
+					console.log(e)
+				})
+		}
 	}
 
 	getCountry = e => {
 		let country =e.nativeEvent.originalTarget.firstChild.data
-		console.log(country)
-		fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+
+		fetch(`http://82.64.247.20:3636/country/${country}`)
 			.then(res => res.json())
-			.then(data => {
-				let country =data[0]
+			.then(country => {
 
 				this.setState({
 					name : country.name,
@@ -48,18 +47,76 @@ class App extends React.Component {
 					region : country.region
 				})
 			})
+			.catch(e => {
+				console.log(e)
+			})
+	}
+
+	handleChange = e => {
+
+		if (e.nativeEvent.originalTarget.id === "countryInput") {
+			let input =e.nativeEvent.originalTarget.value
+
+
+			fetch("http://82.64.247.20:3636/all")
+				.then(res => res.json())
+				.then(data => {
+					let countries =data.filter(country => country.name.slice(0, input.length).toLowerCase() === input.toLowerCase())
+			
+					this.setState(prevState => {
+						return ({
+							...prevState,
+							countries :countries
+						})
+					})
+				})
+				.catch(e => {
+					console.log(e)
+				})			
+		}
+	}
+
+	handleSubmit = e => {
+		e.preventDefault()
+		console.log('cherche')
 	}
 
 	render() {
-		
+
 		return(
-			<div className="row">
-				<div className="col-4 mx-auto">
-					<Button children="France" onClick={this.getCountry} />
-					<Button children="Brazil" onClick={this.getCountry} />
-					<Button children="Croatia" onClick={this.getCountry} />
-				
-					<Card name={this.state.name} capital={this.state.capital} region={this.state.region} population={this.state.population} flag={this.state.flag} />
+			<div className="container">
+				<div className="row w-50 mx-auto">
+					<h2 className="text-center">Country Selector</h2>
+
+					<Search onSubmit={this.handleSubmit} onChange={this.handleChange} />
+					{ 
+						!this.state.search ? (
+							!this.state.countries ? (
+								<p>Loading...</p>
+							) : (
+
+								this.state.countries.map(country => (
+										<Card
+											name		={country.name}
+											capital		={country.capital}
+											region		={country.region}
+											population	={country.population}
+											flag		={country.flag}
+										/>
+								))
+							)) : (
+								<div>
+									{this.state.search}
+									<Card
+										name		={this.state.name}
+										capital		={this.state.capital}
+										region		={this.state.region}
+										population	={this.state.population}
+										flag		={this.state.flag}
+									/>
+								</div>
+							)
+					}
 				</div>
 			</div>
 		)
