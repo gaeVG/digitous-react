@@ -78,35 +78,41 @@ class App extends React.Component {
 
 	handleSubmit = e => {
 		e.preventDefault()
-		console.log('cherche')
+		
 	}
 
 	render() {
 
 		return(
 			<div className="container">
-				<div className="row w-50 mx-auto">
+				<div className="row">
 					<h2 className="text-center">Country Selector</h2>
 
-					<Search onSubmit={this.handleSubmit} onChange={this.handleChange} />
-					{ 
-						!this.state.search ? (
-							!this.state.countries ? (
-								<p>Loading...</p>
-							) : (
+					<div className="col-12">
+						<Search onSubmit={this.handleSubmit} onChange={this.handleChange} />
+					</div>
 
-								this.state.countries.map(country => (
-										<Card
-											name		={country.name}
-											capital		={country.capital}
-											region		={country.region}
-											population	={country.population}
-											flag		={country.flag}
-										/>
-								))
-							)) : (
-								<div>
-									{this.state.search}
+					<div className="col-12">
+						<div className="row">
+						{ 
+							!this.state.search ? (
+								!this.state.countries ? (
+									<p>Loading...</p>
+								) : (
+									this.state.countries.length === 0 
+										? (<p>This country cannot be found....</p>)
+										:
+									this.state.countries.map(country => (
+											<Card
+												name		={country.name}
+												capital		={country.capital}
+												region		={country.region}
+												population	={country.population}
+												flag		={country.flag}
+											/>
+									))
+								)) : (
+
 									<Card
 										name		={this.state.name}
 										capital		={this.state.capital}
@@ -114,9 +120,10 @@ class App extends React.Component {
 										population	={this.state.population}
 										flag		={this.state.flag}
 									/>
-								</div>
-							)
-					}
+								)
+						}
+						</div>
+					</div>
 				</div>
 			</div>
 		)
