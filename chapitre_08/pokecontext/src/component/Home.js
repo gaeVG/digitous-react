@@ -11,10 +11,9 @@ const Home = props => {
 		if (pokemonID > 0) {
 
 			const getPokedex = async () => {
-				console.log("On cherche dans l'API")
 				const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonID}`);
 				const data = await res.json()
-				console.log(data)
+
 				setPokedex(data)
 			}
 
@@ -27,8 +26,6 @@ const Home = props => {
 		setPokemonID(Math.floor(Math.random() * (898)) + 1)
 	}
 
-	console.log()
-	
 	return (
 		<div>
 			<h1>HOME</h1>
