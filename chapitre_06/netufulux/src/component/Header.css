@@ -1,0 +1,17 @@
+span {
+    font-size: 8em;
+    font-family: impact;
+    display: block;
+  }
+  
+  .logo {
+    perspective: 1000px;
+  perspective-origin: 50% 0;
+  font-size: 8em;
+  display: inline-flex;
+  }
+  
+  .logo span {
+    transform-origin: 0 0;
+    transform: scaleX(80) rotateY(89.5deg);
+  }
